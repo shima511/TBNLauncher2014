@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Diagnostics;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Drawing;
 using System.Xml.Serialization;
 using System.IO;
 using System.Windows.Threading;
@@ -104,6 +106,12 @@ namespace TBNLauncher2014
             control_flags -= ControlFocusFlag.ListBox;
         }
 
+        [Conditional("DEBUG")]
+        void DebugMessage(InvalidOperationException ex)
+        {
+            MessageBox.Show(ex.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
         private void Window_Initialized(object sender, EventArgs e)
         {
             timer = new DispatcherTimer(DispatcherPriority.Normal, this.Dispatcher);
@@ -132,7 +140,8 @@ namespace TBNLauncher2014
             }
             catch (InvalidOperationException ex)
             {
-                MessageBox.Show(ex.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                DebugMessage(ex);
+                MessageBox.Show("XMLファイルが破損しています。", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
                 this.Close();
             }
         }
@@ -153,14 +162,20 @@ namespace TBNLauncher2014
 
         void ChangeCurrentImage(int index)
         {
-            BitmapImage image = new BitmapImage();
-            image.BeginInit();
-            string baseDir = System.IO.Directory.GetCurrentDirectory();
-            image.UriSource = new Uri(System.IO.Path.Combine(baseDir, contentsList[this.ListBox.SelectedIndex].ScreenShotImagePath[index]));
-            image.DecodePixelWidth = 220;
-            image.DecodePixelHeight = 160;
-            image.EndInit();
-            this.GameImage.Source = image;
+            try
+            {
+                BitmapImage image = new BitmapImage();
+                image.BeginInit();
+                string baseDir = System.IO.Directory.GetCurrentDirectory();
+                image.UriSource = new Uri(System.IO.Path.Combine(baseDir, contentsList[this.ListBox.SelectedIndex].ScreenShotImagePath[index]));
+                image.DecodePixelWidth = 220;
+                image.DecodePixelHeight = 160;
+                image.EndInit();
+                this.GameImage.Source = image;
+            }
+            catch (FileNotFoundException)
+            {
+            }
         }
 
         void timer_Tick(object sender, EventArgs e)
