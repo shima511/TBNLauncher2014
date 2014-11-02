@@ -50,71 +50,11 @@ namespace TBNLauncher2014
             WindowBackGround = this.Background;
         }
 
-        private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if ((control_flags & ControlFocusFlag.CloseButton) == ControlFocusFlag.CloseButton)
-            {
-                this.CloseButton.Background = ClickedButtonColor;
-            }
-            else
-            {
-                this.CloseButton.Background = MouseOnButtonColor;
-            }
-        }
-
         private void CloseButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if ((control_flags & ControlFocusFlag.CloseButton) == ControlFocusFlag.CloseButton)
             {
                 this.Close();
-            }
-        }
-
-        private void CloseButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            this.CloseButton.Background = ClickedButtonColor;
-            control_flags |= ControlFocusFlag.CloseButton;
-        }
-
-        private void CloseButton_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if ((control_flags & ControlFocusFlag.CloseButton) == ControlFocusFlag.CloseButton)
-            {
-                this.CloseButton.Background = MouseOnButtonColor;
-            }
-            else
-            {
-                this.CloseButton.Background = WindowBackGround;
-            }
-        }
-
-        private void MinimizeButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            this.MinimizeButton.Background = ClickedButtonColor;
-            control_flags |= ControlFocusFlag.MinimizeButton;
-        }
-
-        private void MinimizeButton_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if ((control_flags & ControlFocusFlag.MinimizeButton) == ControlFocusFlag.MinimizeButton)
-            {
-                this.MinimizeButton.Background = ClickedButtonColor;
-            }
-            else
-            {
-                this.MinimizeButton.Background = MouseOnButtonColor;
-            }
-        }
-
-        private void MinimizeButton_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if ((control_flags & ControlFocusFlag.MinimizeButton) == ControlFocusFlag.MinimizeButton)
-            {
-                this.MinimizeButton.Background = MouseOnButtonColor;
-            }
-            else
-            {
-                this.MinimizeButton.Background = WindowBackGround;
             }
         }
 
@@ -136,14 +76,6 @@ namespace TBNLauncher2014
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             mousePoint = e.GetPosition(this);
-        }
-
-        private void Window_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            control_flags = ControlFocusFlag.None;
-            this.CloseButton.Background = WindowBackGround;
-            this.MinimizeButton.Background = WindowBackGround;
-            this.ExecuteButton.Background = Brushes.Green;
         }
 
         private void ExecuteButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
